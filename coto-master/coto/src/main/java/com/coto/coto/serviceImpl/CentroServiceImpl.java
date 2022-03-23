@@ -53,17 +53,23 @@ public class CentroServiceImpl implements CentroService{
 		List<Coche> coches = cocheRepository.findAll();
 		List<CentroDeVenta> centros = centroRepository.findAll();
 		List<ResultDTO> listResult = new ArrayList<ResultDTO>();
+		//obtengo una lista de todos los centros para iterarla y por cada centro iterar todos los coches y llamar al metodo
+		//countByIdCentroAndIdCoche para traerme la cantidad de ese coche particular vendido en ese centro y luego sacar el %
 		for (Iterator<CentroDeVenta> iteratorCentro = centros.iterator(); iteratorCentro.hasNext();) {
 			CentroDeVenta centroDeVenta = (CentroDeVenta) iteratorCentro.next();
 			for (Iterator<Coche> iteratorCoche = coches.iterator(); iteratorCoche.hasNext();) {
 				ResultDTO result = new ResultDTO();
 				Coche coche = (Coche) iteratorCoche.next();
-				Long countByCenterAndIdCoche = 0L;
+				double countByCenterAndIdCoche = 0.0;
 				countByCenterAndIdCoche = ventaRepository.countByIdCentroAndIdCoche(centroDeVenta.getId(), coche.getId());
 				double porcentaje = ((countByCenterAndIdCoche*100)/totalSale);
-				result.setPorcentaje(porcentaje);
+				result.setPorcentajeVentaPorCentro(porcentaje);
+				result.setNombreCentro(centroDeVenta.getNombre());
+				result.setNombreModelo(coche.getNombre());
 				result.setIdCentro(centroDeVenta.getId());
 				result.setIdModelo(coche.getId());
+				result.setProvinciaCentro(centroDeVenta.getProvincia());
+				result.setPrecio(coche.getPrecio());
 				listResult.add(result);
 			}
 		}

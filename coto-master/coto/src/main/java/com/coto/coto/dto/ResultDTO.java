@@ -9,6 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResultDTO {
 	Long idCentro;
+	String nombreCentro;
+	String provinciaCentro;
 	Long idModelo;
-	Double porcentaje;
+	String nombreModelo;
+	String precio;
+	Double porcentajeVentaPorCentro;
+	
 }
