@@ -5,5 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 import com.coto.coto.entity.Venta;
 
 public interface VentaRepository extends CrudRepository<Venta, Integer>{
-	public long countByIdCentro(Long id);
+	public Long countByIdCentro(Long id);
+	public Long countByIdCentroAndIdCoche(Long idCentro,Long idCoche);
 }

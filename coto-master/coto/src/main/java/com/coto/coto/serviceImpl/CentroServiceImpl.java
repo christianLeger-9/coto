@@ -1,15 +1,20 @@
 package com.coto.coto.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.coto.coto.dto.ResultDTO;
 import com.coto.coto.entity.CentroDeVenta;
+import com.coto.coto.entity.Coche;
 import com.coto.coto.repository.CentroRepository;
+import com.coto.coto.repository.CocheRepository;
 import com.coto.coto.repository.VentaRepository;
 import com.coto.coto.service.CentroService;
 
@@ -21,6 +26,9 @@ public class CentroServiceImpl implements CentroService{
 	
 	@Autowired
 	VentaRepository ventaRepository;
+	
+	@Autowired
+    private CocheRepository cocheRepository;
 	
 	public Map<String,Long> totalByCenter(){
 		Map<String,Long> result =  new HashMap<String,Long>();
@@ -37,5 +45,35 @@ public class CentroServiceImpl implements CentroService{
 	@Override
 	public Optional<CentroDeVenta> findById(Long idCentro) {
 		return centroRepository.findById(idCentro);
+	}
+	
+	@Override
+	public List<ResultDTO> porcentajePorModelo() {
+		Long totalSale = ventaRepository.count();
+		List<Coche> coches = cocheRepository.findAll();
+		List<CentroDeVenta> centros = centroRepository.findAll();
+		List<ResultDTO> listResult = new ArrayList<ResultDTO>();
+		for (Iterator<CentroDeVenta> iteratorCentro = centros.iterator(); iteratorCentro.hasNext();) {
+			CentroDeVenta centroDeVenta = (CentroDeVenta) iteratorCentro.next();
+			for (Iterator<Coche> iteratorCoche = coches.iterator(); iteratorCoche.hasNext();) {
+				ResultDTO result = new ResultDTO();
+				Coche coche = (Coche) iteratorCoche.next();
+				Long countByCenterAndIdCoche = 0L;
+				countByCenterAndIdCoche = ventaRepository.countByIdCentroAndIdCoche(centroDeVenta.getId(), coche.getId());
+				double porcentaje = ((countByCenterAndIdCoche*100)/totalSale);
+				result.setPorcentaje(porcentaje);
+				result.setIdCentro(centroDeVenta.getId());
+				result.setIdModelo(coche.getId());
+				listResult.add(result);
+			}
+		}
+		return listResult;
+	}
+	
+	@Override
+	public  Long countByIdCentroAndIdCoche(Long idCentro,Long idCoche) {
+		Long countByCenterAndIdCoche = 0L;
+		countByCenterAndIdCoche = ventaRepository.countByIdCentroAndIdCoche(idCentro, idCoche);
+		return countByCenterAndIdCoche;
 	}
 }

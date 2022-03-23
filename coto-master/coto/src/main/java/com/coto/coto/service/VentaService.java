@@ -6,4 +6,5 @@ public interface VentaService {
 	public Venta newSale(Venta venta);
 	public Long totalSales();
 	public Long countByIdCentro(Long idCentro);
+	public Long countByIdCentroAndIdCoche(Long idCentro,Long idCoche);
 }

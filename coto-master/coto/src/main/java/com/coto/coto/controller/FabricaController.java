@@ -1,6 +1,8 @@
 package com.coto.coto.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coto.coto.dto.ResultDTO;
 import com.coto.coto.entity.CentroDeVenta;
 import com.coto.coto.entity.Venta;
 import com.coto.coto.service.CentroService;
@@ -53,10 +56,9 @@ public class FabricaController {
 	@RequestMapping(value="/porcentajePorModelo", method=RequestMethod.POST)
     public ResponseEntity<?> porcentajePorModelo() {
 		long inicio = System.currentTimeMillis();
-		Map<String,Long> result = new HashMap<String,Long>();
+		List<ResultDTO> result = new ArrayList<ResultDTO>();
 		try {
-			result = ventaService.totalSales();
-			
+			result = centroService.porcentajePorModelo();
 		} catch( Exception e) { 
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body((e.getMessage()));
 		}
