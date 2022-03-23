@@ -18,6 +18,8 @@ Desde el Eclipse o STS, importar el proyecto (importar como proyecto Maven exist
 
 Aclaraciones:
 
+Utilizar el branch Master para bajar el repo
+
 Se agregaron datos desde cotoAplicacion.java en el metodo loadData, se puede agregar mas de ser necesario para corroborar los porcentajes
 
 Se puede utilizar swagger para probar los endpoint con la siguiente url una vez levantado el proyecto, http://localhost:8080/swagger-ui.html#/fabrica-controller
